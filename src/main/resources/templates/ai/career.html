@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AlumniHub - AI Career Advisor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+    
+    <div class="main-content">
+        <div class="d-flex gap-2 flex-wrap mb-3">
+            <a href="/ai/career" class="btn btn-sm fw-bold text-white" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">🤖 Career Advisor</a>
+            <a href="/ai/bio" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">📝 Bio Generator</a>
+            <a href="/ai/message-assist" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">✉️ Message Assistant</a>
+            <a href="/ai/search" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">🔍 Smart Search</a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header"><h4 class="mb-0">🤖 AI Career Advisor</h4><small>Personalized career advice powered by Gemini AI</small></div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>👋 Hello, <span th:text="${alumni.fullName}"></span>!</strong>
+                            Get personalized career advice based on your profile.
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6"><small style="color:#9575cd;">Current Role</small><p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.currentJob}"></p></div>
+                            <div class="col-md-6"><small style="color:#9575cd;">Company</small><p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.company}"></p></div>
+                        </div>
+                        <form th:action="@{/ai/career}" method="post">
+                            <button type="submit" class="btn w-100 fw-bold text-white" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">🤖 Get My Career Advice</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card" th:if="${advice != null}">
+                    <div class="card-header"><span>✨ Your Career Advice</span></div>
+                    <div class="card-body">
+                        <div style="white-space:pre-wrap; line-height:1.8; color:#e1bee7;" th:text="${advice}"></div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/jobs" class="btn btn-success btn-sm">💼 View Jobs</a>
+                        <a href="/ai/bio" class="btn btn-sm ms-2" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">📝 Generate Bio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

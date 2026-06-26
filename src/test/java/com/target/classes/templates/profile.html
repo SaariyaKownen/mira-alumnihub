@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MIRA AlumniHub - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="app-shell">
+    
+    <div class="main-content">
+
+        <!-- Profile Header -->
+        <div class="card p-4 mb-4">
+            <div class="d-flex align-items-center gap-4 flex-wrap">
+                <img th:if="${alumni.photoPath != null}"
+                     th:src="@{/photos/{p}(p=${alumni.photoPath})}"
+                     style="width:100px; height:100px; border-radius:50%;
+                            object-fit:cover; border:3px solid #7c4dff;"/>
+                <div th:if="${alumni.photoPath == null}"
+                     class="sidebar-avatar"
+                     style="width:100px; height:100px; font-size:38px;"
+                     th:text="${#strings.substring(alumni.fullName,0,1)}"></div>
+
+                <div>
+                    <h3 style="color:#e1bee7; font-weight:bold;" th:text="${alumni.fullName}"></h3>
+                    <h6 style="color:#9575cd;"
+                        th:if="${alumni.role == 'ALUMNI'}"
+                        th:text="${alumni.currentJob} + ' at ' + ${alumni.company}"></h6>
+                    <h6 style="color:#81d4fa;"
+                        th:if="${alumni.role == 'STUDENT'}"
+                        th:text="${alumni.department} + ' — ' + ${alumni.currentYear}"></h6>
+                    <p style="color:#9575cd; margin-bottom:6px;">
+                        📧 <span th:text="${alumni.email}"></span>
+                    </p>
+                    <span class="badge"
+                          th:if="${alumni.role == 'ALUMNI'}"
+                          style="background:linear-gradient(135deg,#7c4dff,#ce93d8); color:white;">
+                        🎓 Class of <span th:text="${alumni.graduationYear}"></span>
+                    </span>
+                    <span class="badge"
+                          th:if="${alumni.role == 'STUDENT'}"
+                          style="background:linear-gradient(135deg,#1565c0,#0288d1); color:white;">
+                        🎒 Student
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Left Column -->
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-header"><h6 class="mb-0">📋 Profile Details</h6></div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <small style="color:#9575cd;">Full Name</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.fullName}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <small style="color:#9575cd;">Email</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.email}"></p>
+                        </div>
+                        <div class="mb-3" th:if="${alumni.role == 'ALUMNI'}">
+                            <small style="color:#9575cd;">Graduation Year</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.graduationYear}"></p>
+                        </div>
+                        <div class="mb-3" th:if="${alumni.role == 'ALUMNI'}">
+                            <small style="color:#9575cd;">Current Job</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.currentJob}"></p>
+                        </div>
+                        <div class="mb-3" th:if="${alumni.role == 'ALUMNI'}">
+                            <small style="color:#9575cd;">Company</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.company}"></p>
+                        </div>
+                        <div class="mb-3" th:if="${alumni.role == 'STUDENT'}">
+                            <small style="color:#9575cd;">Department</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.department}"></p>
+                        </div>
+                        <div class="mb-0" th:if="${alumni.role == 'STUDENT'}">
+                            <small style="color:#9575cd;">Skills</small>
+                            <p style="color:#e1bee7; font-weight:bold;" th:text="${alumni.skills}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body d-grid gap-2">
+                        <a th:href="@{/messages/chat/{e}(e=${alumni.email})}"
+                           class="btn btn-success">💬 Send Message</a>
+                        <a href="/ai/message-assist" class="btn btn-primary">🤖 AI Message Help</a>
+						<a th:if="${alumni.email == currentUser.email}"
+						   th:href="@{/edit/{id}(id=${alumni.id})}"
+						   class="btn" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">
+						    ✏️ Edit Profile
+						</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-8">
+				<div class="card mb-3">
+				    <div class="card-header d-flex justify-content-between">
+				        <span>📝 Professional Bio</span>
+				        <a href="/ai/bio" class="btn btn-sm btn-success">
+				            ✨ Generate with AI
+				        </a>
+				    </div>
+				    <div class="card-body">
+				        <div th:if="${autoBio != null}">
+				            <p style="color:#e1bee7; line-height:1.8; font-size:14px;"
+				               th:text="${autoBio}"></p>
+				            <small style="color:#7e57c2;">
+				                ✦ AI Generated Bio — visit AI Hub to customize
+				            </small>
+				        </div>
+				        <div th:if="${autoBio == null}">
+				            <p style="color:#9575cd; font-style:italic;">
+				                No bio yet. Click "Generate with AI" to create a
+				                professional bio automatically! ✨
+				            </p>
+				        </div>
+				    </div>
+				</div>
+
+				<div class="card mb-3">
+				    <div class="card-header d-flex justify-content-between">
+				        <span>🤖 AI Career Insights</span>
+				        <a href="/ai/career" class="btn btn-sm btn-success">
+				            Full Advice →
+				        </a>
+				    </div>
+				    <div class="card-body">
+				        <div th:if="${autoCareer != null}">
+				            <p style="color:#e1bee7; line-height:1.9;
+				                      font-size:14px; white-space:pre-line;"
+				               th:text="${autoCareer}"></p>
+				            <small style="color:#7e57c2;">
+				                ✦ AI Career Tips — powered by Gemini
+				            </small>
+				        </div>
+				        <div th:if="${autoCareer == null}">
+				            <p style="color:#9575cd;">
+				                Get personalized career advice, skill recommendations
+				                and next role suggestions powered by AI!
+				            </p>
+				            <a href="/ai/career" class="btn btn-success btn-sm">
+				                🚀 Get My Career Advice
+				            </a>
+				        </div>
+				    </div>
+				</div>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <span>💼 Job Opportunities</span>
+                        <a href="/jobs" class="btn btn-sm btn-success">View All Jobs</a>
+                    </div>
+                    <div class="card-body">
+                        <p style="color:#9575cd;">
+                            Check the latest job postings from fellow alumni
+                            and grow your career network!
+                        </p>
+                        <a href="/jobs" class="btn btn-success btn-sm">💼 Browse Jobs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

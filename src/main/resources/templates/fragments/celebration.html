@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="celebration">
+<style>
+	.celebrate-overlay {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background: rgba(10,10,35,0.85);
+	    backdrop-filter: blur(4px);
+	    z-index: 9999;
+	    display: none;
+	    align-items: center;
+	    justify-content: center;
+	    margin: 0;
+	    padding: 0;
+	}
+	.celebrate-overlay.show {
+	    display: flex;
+	}
+    .celebrate-box {
+        background: linear-gradient(160deg, #1a237e, #4a148c);
+        border: 1px solid rgba(206,147,216,0.4);
+        border-radius: 20px;
+        padding: 40px 36px;
+        text-align: center;
+        max-width: 380px;
+        box-shadow: 0 20px 60px rgba(124,77,255,0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    .celebrate-emoji { font-size: 60px; margin-bottom: 14px; }
+    .celebrate-title { color: white; font-weight: bold; font-size: 22px; margin-bottom: 8px; }
+    .celebrate-sub { color: #ce93d8; font-size: 14px; margin-bottom: 22px; line-height: 1.6; }
+    .celebrate-btn {
+        background: linear-gradient(135deg,#7c4dff,#ce93d8);
+        color: white; border: none; padding: 10px 30px;
+        border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 14px;
+        margin: 0 5px;
+    }
+    .confetti-piece {
+        position: absolute; top: -10px;
+        width: 8px; height: 14px;
+        opacity: 0.9;
+    }
+</style>
+
+<div class="celebrate-overlay" id="celebrateOverlay">
+    <div class="celebrate-box" id="celebrateBox">
+        <div class="celebrate-emoji" id="celebrateEmoji">🎉</div>
+        <div class="celebrate-title" id="celebrateTitle">Congratulations!</div>
+        <div class="celebrate-sub" id="celebrateSub">You're doing amazing.</div>
+        <button type="button" class="celebrate-btn" onclick="closeCelebration()">Continue ✨</button>
+    </div>
+</div>
+
+<div class="celebrate-overlay" id="confirmOverlay">
+    <div class="celebrate-box" style="max-width:340px;">
+        <div class="celebrate-emoji">🗑️</div>
+        <div class="celebrate-title" id="confirmTitle">Are you sure?</div>
+        <div class="celebrate-sub" id="confirmSub">This action cannot be undone.</div>
+        <div>
+            <button type="button" class="celebrate-btn"
+                    style="background:rgba(255,255,255,0.1); border:1px solid rgba(206,147,216,0.3);"
+                    onclick="closeConfirm()">Cancel</button>
+            <button type="button" class="celebrate-btn"
+                    style="background:linear-gradient(135deg,#e53935,#ff6b6b);"
+                    id="confirmActionBtn">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var confettiColors = ['#7c4dff','#ce93d8','#ffd700','#4CAF50','#ff6b6b','#42a5f5'];
+    var pendingConfirmUrl = null;
+
+    function showCelebration(emoji, title, sub) {
+        document.getElementById('celebrateEmoji').textContent = emoji;
+        document.getElementById('celebrateTitle').textContent = title;
+        document.getElementById('celebrateSub').textContent = sub;
+        document.getElementById('celebrateOverlay').classList.add('show');
+        launchConfetti();
+    }
+
+    function closeCelebration() {
+        document.getElementById('celebrateOverlay').classList.remove('show');
+    }
+
+    function launchConfetti() {
+        var box = document.getElementById('celebrateBox');
+        for (var i = 0; i < 30; i++) {
+            (function() {
+                var piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = (Math.random() * 100) + '%';
+                piece.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                piece.style.transition = 'transform ' + (Math.random() * 1.5 + 1.5) + 's linear, opacity ' + (Math.random() * 1.5 + 1.5) + 's linear';
+                box.appendChild(piece);
+                setTimeout(function() {
+                    piece.style.transform = 'translateY(420px) rotate(360deg)';
+                    piece.style.opacity = '0';
+                }, 20);
+                setTimeout(function() { piece.remove(); }, 3000);
+            })();
+        }
+    }
+
+    function openConfirm(url, title, sub) {
+        pendingConfirmUrl = url;
+        document.getElementById('confirmTitle').textContent = title || 'Are you sure?';
+        document.getElementById('confirmSub').textContent = sub || 'This action cannot be undone.';
+        document.getElementById('confirmOverlay').classList.add('show');
+    }
+
+    function closeConfirm() {
+        document.getElementById('confirmOverlay').classList.remove('show');
+        pendingConfirmUrl = null;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('confirmActionBtn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                if (pendingConfirmUrl) {
+                    window.location.href = pendingConfirmUrl;
+                }
+            });
+        }
+    });
+</script>
+</div>
+</body>
+</html>

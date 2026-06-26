@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MIRA AlumniHub - Memory Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+    <style>
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .game-card {
+            aspect-ratio: 1;
+            border-radius: 14px;
+            cursor: pointer;
+            position: relative;
+            perspective: 600px;
+        }
+        .card-inner {
+            width: 100%; height: 100%;
+            position: relative;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+        .game-card.flipped .card-inner,
+        .game-card.matched .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .card-back {
+            background: linear-gradient(135deg, #5e35b1, #7c4dff);
+            color: white;
+            font-size: 26px;
+        }
+        .card-front {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(206,147,216,0.4);
+            color: #e1bee7;
+            transform: rotateY(180deg);
+            flex-direction: column;
+            padding: 6px;
+            text-align: center;
+            font-size: 11px;
+            gap: 4px;
+        }
+        .game-card.matched .card-front {
+            background: rgba(124,255,158,0.18);
+            border-color: rgba(124,255,158,0.5);
+        }
+        .game-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#7c4dff,#ce93d8);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 14px;
+        }
+        .game-stats {
+            display: flex; gap: 16px; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .game-stat-box {
+            background: rgba(206,147,216,0.1);
+            border: 1px solid rgba(206,147,216,0.25);
+            border-radius: 10px;
+            padding: 10px 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="app-shell">
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">🎮 Alumni Memory Match</div>
+                <div style="color:#9575cd; font-size:13px;">
+                    Match the pairs and learn your network's faces!
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${people.size() < 2}" class="card text-center p-5">
+            <h5 style="color:#9575cd;">Need at least 2 alumni/students to play!</h5>
+        </div>
+
+        <div th:if="${people.size() >= 2}">
+            <div class="game-stats">
+                <div class="game-stat-box">
+                    <div style="color:#ce93d8; font-size:22px; font-weight:bold;" id="moveCount">0</div>
+                    <div style="color:#9575cd; font-size:11px;">Moves</div>
+                </div>
+                <div class="game-stat-box">
+                    <div style="color:#ce93d8; font-size:22px; font-weight:bold;" id="matchCount">0</div>
+                    <div style="color:#9575cd; font-size:11px;">Matches</div>
+                </div>
+                <div class="game-stat-box">
+                    <div style="color:#ce93d8; font-size:22px; font-weight:bold;" id="timeCount">0s</div>
+                    <div style="color:#9575cd; font-size:11px;">Time</div>
+                </div>
+            </div>
+
+            <div id="winMessage" class="alert alert-success text-center" style="display:none; max-width:560px; margin:0 auto 16px;">
+                🎉 You matched everyone! Well played!
+            </div>
+
+            <div class="game-grid" id="gameGrid"></div>
+
+            <div class="text-center mt-4">
+                <button class="btn fw-bold text-white" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);"
+                        onclick="location.reload()">🔄 Restart Game</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+const people = /*[[${people}]]*/ [];
+/*]]>*/
+
+function initials(name) {
+    return name ? name.charAt(0).toUpperCase() : '?';
+}
+
+// Build pairs from real people (max 8 pairs = 16 cards)
+let pool = people.slice(0, 8);
+let cardData = [];
+pool.forEach((p, i) => {
+    cardData.push({ id: i, name: p.fullName });
+    cardData.push({ id: i, name: p.fullName });
+});
+
+// shuffle
+for (let i = cardData.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cardData[i], cardData[j]] = [cardData[j], cardData[i]];
+}
+
+const grid = document.getElementById('gameGrid');
+let flipped = [];
+let matched = 0;
+let moves = 0;
+let seconds = 0;
+let timerStarted = false;
+
+cardData.forEach((card, idx) => {
+    const el = document.createElement('div');
+    el.className = 'game-card';
+    el.dataset.id = card.id;
+    el.dataset.idx = idx;
+    el.innerHTML = `
+        <div class="card-inner">
+            <div class="card-face card-back">🎓</div>
+            <div class="card-face card-front">
+                <div class="game-avatar">${initials(card.name)}</div>
+                <div>${card.name}</div>
+            </div>
+        </div>`;
+    el.addEventListener('click', () => flipCard(el, card));
+    grid.appendChild(el);
+});
+
+function flipCard(el, card) {
+    if (!timerStarted) {
+        timerStarted = true;
+        setInterval(() => {
+            seconds++;
+            document.getElementById('timeCount').textContent = seconds + 's';
+        }, 1000);
+    }
+    if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
+    if (flipped.length === 2) return;
+
+    el.classList.add('flipped');
+    flipped.push({ el, card });
+
+    if (flipped.length === 2) {
+        moves++;
+        document.getElementById('moveCount').textContent = moves;
+        const [a, b] = flipped;
+        if (a.card.id === b.card.id) {
+            setTimeout(() => {
+                a.el.classList.add('matched');
+                b.el.classList.add('matched');
+                flipped = [];
+                matched++;
+                document.getElementById('matchCount').textContent = matched;
+                if (matched === pool.length) {
+                    document.getElementById('winMessage').style.display = 'block';
+                }
+            }, 400);
+        } else {
+            setTimeout(() => {
+                a.el.classList.remove('flipped');
+                b.el.classList.remove('flipped');
+                flipped = [];
+            }, 900);
+        }
+    }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

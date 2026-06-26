@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MIRA AlumniHub - Leaderboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="app-shell">
+    
+    <div class="main-content">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">🏆 Leaderboard</div>
+                <div style="color:#9575cd; font-size:13px;">
+                    Earn points by messaging, posting jobs and staying active!
+                </div>
+            </div>
+        </div>
+
+        <div class="card text-center p-5" th:if="${leaders.empty}">
+            <h5 style="color:#9575cd;">No activity yet. Be the first to earn points!</h5>
+        </div>
+
+        <div class="card" th:if="${!leaders.empty}">
+            <div class="list-group list-group-flush">
+                <div th:each="a, i : ${leaders}"
+                     class="list-group-item d-flex align-items-center gap-3 py-3">
+                    <div style="font-size:18px; font-weight:bold; width:30px; text-align:center; color:#ce93d8;"
+                         th:text="${i.count}"></div>
+                    <div class="sidebar-avatar" th:text="${#strings.substring(a.fullName,0,1)}"></div>
+                    <div style="flex:1;">
+                        <div style="color:#e1bee7; font-weight:bold;" th:text="${a.fullName}"></div>
+                        <small style="color:#9575cd;" th:text="${pointsService.getBadge(a.points != null ? a.points : 0)}"></small>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color:#ce93d8; font-weight:bold; font-size:18px;"
+                             th:text="${a.points != null ? a.points : 0}"></div>
+                        <small style="color:#9575cd;">points</small>
+                    </div>
+                    <div style="text-align:right; min-width:70px;" th:if="${a.streakDays != null and a.streakDays > 0}">
+                        <div style="color:#ffd700; font-weight:bold;" th:text="'🔥 ' + ${a.streakDays}"></div>
+                        <small style="color:#9575cd;">day streak</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

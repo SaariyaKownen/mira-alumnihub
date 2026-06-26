@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MIRA AlumniHub - Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+  
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-title">🎉 College Events</div>
+            <span style="color:#9575cd; font-size:13px;">
+                Events are managed by the college admin
+            </span>
+        </div>
+
+        <h5 style="color:#e1bee7; font-weight:bold; margin-bottom:14px;">
+            🔔 Upcoming Events
+            <span style="background:linear-gradient(135deg,#7c4dff,#ce93d8); color:white;
+                         font-size:12px; padding:3px 12px; border-radius:14px; margin-left:6px;"
+                  th:text="${upcomingEvents.size()}"></span>
+        </h5>
+
+        <div class="card text-center p-4 mb-4" th:if="${upcomingEvents.empty}">
+            <h5 style="color:#9575cd;">No upcoming events!</h5>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4" th:each="ev : ${upcomingEvents}">
+                <div class="card h-100" style="border-top:3px solid #7c4dff !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge mb-2" style="background:rgba(206,147,216,0.2); color:#ce93d8;"
+                                  th:text="${ev.category}"></span>
+                            <small style="color:#9575cd;" th:text="${ev.eventDate}"></small>
+                        </div>
+                        <h5 style="color:#e1bee7; font-weight:bold;" th:text="${ev.title}"></h5>
+                        <p style="color:#b39ddb; font-size:13px;" th:text="${ev.description}"></p>
+                        <hr style="border-color:rgba(206,147,216,0.2);"/>
+                        <div class="d-flex justify-content-between" style="font-size:12px;">
+                            <small style="color:#9575cd;">📍 <span th:text="${ev.venue}"></span></small>
+                            <small style="color:#9575cd;">👤 <span th:text="${ev.organizer}"></span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 style="color:#e1bee7; font-weight:bold; margin-bottom:14px;">📋 All Events</h5>
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr><th>Title</th><th>Category</th><th>Date</th><th>Venue</th><th>Organizer</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ev : ${allEvents}">
+                            <td style="color:#e1bee7; font-weight:bold;" th:text="${ev.title}"></td>
+                            <td><span class="badge bg-secondary" th:text="${ev.category}"></span></td>
+                            <td th:text="${ev.eventDate}"></td>
+                            <td th:text="${ev.venue}"></td>
+                            <td th:text="${ev.organizer}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

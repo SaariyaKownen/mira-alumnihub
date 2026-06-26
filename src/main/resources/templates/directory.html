@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alumni Directory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+    <div class="main-content">
+	<div class="topbar">
+            <div class="topbar-title">👥 Alumni Directory</div>
+            <span style="background:linear-gradient(135deg,#7c4dff,#ce93d8);
+                         color:white; font-weight:bold; padding:6px 16px;
+                         border-radius:16px; font-size:13px;"
+                  th:text="${alumniList.size()} + ' Alumni'"></span>
+     </div>
+
+        <div class="card p-3 mb-4">
+            <form th:action="@{/directory}" method="get" class="d-flex gap-2">
+                <input type="text" name="keyword" th:value="${keyword}"
+                       class="form-control"
+                       placeholder="🔍 Search by Name, Company or Graduation Year..."/>
+                <button type="submit"
+                        style="background:linear-gradient(135deg,#7c4dff,#ce93d8);
+                               color:white; border:none; border-radius:8px;
+                               padding:0 20px; font-weight:bold;">
+                    Search
+                </button>
+                <a href="/directory"
+                   class="btn"
+                   style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">
+                    ✕ Clear
+                </a>
+            </form>
+        </div>
+
+        <div class="card" th:if="${alumniList.size() > 0}">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Name</th><th>Email</th>
+                            <th>Grad Year</th><th>Job Title</th>
+                            <th>Company</th><th>Profile</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a, i : ${alumniList}">
+                            <td th:text="${i.count}"></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img th:if="${a.photoPath != null}"
+                                         th:src="@{/photos/{p}(p=${a.photoPath})}"
+                                         style="width:36px; height:36px; border-radius:50%;
+                                                object-fit:cover; border:2px solid #7c4dff;"/>
+                                    <div th:if="${a.photoPath == null}"
+                                         class="sidebar-avatar"
+                                         style="width:36px; height:36px; font-size:14px;"
+                                         th:text="${#strings.substring(a.fullName,0,1)}"></div>
+                                    <a th:href="@{/profile/{id}(id=${a.id})}"
+                                       style="color:#ce93d8; font-weight:bold; text-decoration:none;"
+                                       th:text="${a.fullName}"></a>
+                                </div>
+                            </td>
+                            <td th:text="${a.email}"></td>
+                            <td th:text="${a.graduationYear}"></td>
+                            <td th:text="${a.currentJob}"></td>
+                            <td><span class="badge bg-secondary" th:text="${a.company}"></span></td>
+							<td>
+							    <a th:href="@{/profile/{id}(id=${a.id})}"
+							       class="btn btn-sm"
+							       style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">
+							       👤 View Profile
+							    </a>
+							</td>                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card text-center p-5" th:if="${alumniList.size() == 0}">
+            <h4 style="color:#9575cd;">No alumni found!</h4>
+            <a href="/directory" class="btn mt-2"
+               style="background:linear-gradient(135deg,#7c4dff,#ce93d8); color:white;">
+                Show All Alumni
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

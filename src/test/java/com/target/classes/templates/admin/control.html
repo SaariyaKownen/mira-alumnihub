@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Control Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+    
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">🛡️ Admin Control Panel</div>
+                <div style="color:#9575cd; font-size:13px;">
+                    College-only access — manage AlumniHub events
+                </div>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:28px;">👥</div>
+                        <h2 class="fw-bold mt-2" style="color:#e1bee7;" th:text="${totalAlumni}"></h2>
+                        <p style="color:#9575cd;">Total Alumni</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:28px;">🎒</div>
+                        <h2 class="fw-bold mt-2" style="color:#e1bee7;" th:text="${totalStudents}"></h2>
+                        <p style="color:#9575cd;">Total Students</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:28px;">💼</div>
+                        <h2 class="fw-bold mt-2" style="color:#e1bee7;" th:text="${totalJobs}"></h2>
+                        <p style="color:#9575cd;">Jobs Posted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Event (admin only) -->
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="mb-0">📢 Add College Event</h5></div>
+            <div class="card-body">
+                <form th:action="@{/admin/control/add-event}" th:object="${event}" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input th:field="*{title}" class="form-control" placeholder="Event Title *" required/>
+                        </div>
+                        <div class="col-md-6">
+                            <input th:field="*{venue}" class="form-control" placeholder="Venue"/>
+                        </div>
+                        <div class="col-md-4">
+                            <input th:field="*{eventDate}" type="date" class="form-control" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <input th:field="*{organizer}" class="form-control" placeholder="Organizer Name"/>
+                        </div>
+                        <div class="col-md-4">
+                            <select th:field="*{category}" class="form-select">
+                                <option value="">Select Category</option>
+                                <option value="Reunion">🎓 Alumni Reunion</option>
+                                <option value="Seminar">📚 Seminar</option>
+                                <option value="Workshop">🔧 Workshop</option>
+                                <option value="Sports">⚽ Sports</option>
+                                <option value="Cultural">🎭 Cultural</option>
+                                <option value="Technical">💻 Technical</option>
+                                <option value="Other">📌 Other</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <textarea th:field="*{description}" class="form-control" rows="2" placeholder="Event Description..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success fw-bold px-4">📢 Add Event</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+		<!-- Manage People -->
+		<h5 style="color:#e1bee7; font-weight:bold; margin-bottom:14px; margin-top:30px;">
+		    👥 Manage Alumni & Students
+		</h5>
+		<div class="card mb-4">
+		    <div class="table-responsive">
+		        <table class="table table-hover mb-0">
+		            <thead>
+		                <tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr>
+		            </thead>
+		            <tbody>
+		                <tr th:each="p : ${allPeople}">
+		                    <td style="color:#e1bee7; font-weight:bold;" th:text="${p.fullName}"></td>
+		                    <td th:text="${p.email}"></td>
+		                    <td>
+		                        <span class="badge" th:if="${p.role == 'ALUMNI'}"
+		                              style="background:linear-gradient(135deg,#7c4dff,#ce93d8); color:white;">Alumni</span>
+		                        <span class="badge" th:if="${p.role == 'STUDENT'}"
+		                              style="background:linear-gradient(135deg,#1565c0,#0288d1); color:white;">Student</span>
+		                    </td>
+		                    <td>
+								<a th:href="@{/admin/control/delete-person/{id}(id=${p.id})}"
+								   class="btn btn-danger btn-sm"
+								   onclick="return confirm('Delete this account?')">
+								   🗑️ Delete
+								</a>
+		                    </td>
+		                </tr>
+		            </tbody>
+		        </table>
+		    </div>
+		</div>
+        <!-- Manage Events -->
+        <h5 style="color:#e1bee7; font-weight:bold; margin-bottom:14px;">📋 Manage All Events</h5>
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr><th>Title</th><th>Category</th><th>Date</th><th>Venue</th><th>Organizer</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ev : ${allEvents}">
+                            <td style="color:#e1bee7; font-weight:bold;" th:text="${ev.title}"></td>
+                            <td><span class="badge bg-secondary" th:text="${ev.category}"></span></td>
+                            <td th:text="${ev.eventDate}"></td>
+                            <td th:text="${ev.venue}"></td>
+                            <td th:text="${ev.organizer}"></td>
+                            <td>
+								<a th:href="@{/admin/control/delete-event/{id}(id=${ev.id})}"
+								   class="btn btn-danger btn-sm"
+								   onclick="return confirm('Delete this event?')">
+								   🗑️
+								</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

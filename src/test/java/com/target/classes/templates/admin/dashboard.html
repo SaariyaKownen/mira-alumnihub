@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+    
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div class="topbar-title">📊 Admin Dashboard</div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card h-100" style="background:linear-gradient(135deg,#5e35b1,#7c4dff) !important;">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:30px;">👥</div>
+                        <h2 class="fw-bold mt-2" style="color:white;" th:text="${totalAlumni}"></h2>
+                        <p class="mb-0 fw-bold" style="color:white;">Total Alumni</p>
+                    </div>
+                    <div class="card-footer text-center pb-3">
+                        <a href="/directory" class="btn btn-sm btn-outline-light fw-bold">👥 View All Alumni</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100" style="background:linear-gradient(135deg,#1565c0,#0288d1) !important;">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:30px;">🎒</div>
+                        <h2 class="fw-bold mt-2" style="color:white;" th:text="${totalStudents}"></h2>
+                        <p class="mb-0 fw-bold" style="color:white;">Total Students</p>
+                    </div>
+                    <div class="card-footer text-center pb-3">
+                        <a href="/students" class="btn btn-sm btn-outline-light fw-bold">🎒 View All Students</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100" style="background:linear-gradient(135deg,#e65100,#FF9800) !important;">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:30px;">💼</div>
+                        <h2 class="fw-bold mt-2" style="color:white;" th:text="${totalJobs}"></h2>
+                        <p class="mb-0 fw-bold" style="color:white;">Jobs Posted</p>
+                    </div>
+                    <div class="card-footer text-center pb-3">
+                        <a href="/jobs" class="btn btn-sm btn-outline-light fw-bold">💼 View Jobs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100" style="background:linear-gradient(135deg,#6a1b9a,#e91e63) !important;">
+                    <div class="card-body text-center py-4">
+                        <div style="font-size:30px;">🏢</div>
+                        <h2 class="fw-bold mt-2" style="color:white;" th:text="${byCompany.size()}"></h2>
+                        <p class="mb-0 fw-bold" style="color:white;">Companies</p>
+                    </div>
+                    <div class="card-footer text-center pb-3">
+                        <a href="/directory" class="btn btn-sm btn-outline-light fw-bold">🏢 View Directory</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alumni Charts -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header fw-bold">🏢 Alumni by Company</div>
+                    <div class="card-body"><canvas id="companyChart" height="250"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header fw-bold">📅 Alumni by Graduation Year</div>
+                    <div class="card-body"><canvas id="yearChart" height="250"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Charts -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header fw-bold">🎒 Students by Department</div>
+                    <div class="card-body"><canvas id="deptChart" height="250"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header fw-bold">📚 Students by Year</div>
+                    <div class="card-body"><canvas id="studentYearChart" height="250"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Lists -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header fw-bold">🆕 Recently Joined Alumni</div>
+                    <div class="list-group list-group-flush">
+                        <div th:if="${recentAlumni.empty}" class="list-group-item text-center" style="color:#9575cd;">No alumni yet</div>
+                        <a th:each="a : ${recentAlumni}" th:href="@{/profile/{id}(id=${a.id})}"
+                           class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                            <img th:if="${a.photoPath != null}" th:src="@{/photos/{p}(p=${a.photoPath})}"
+                                 style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #7c4dff;"/>
+                            <div th:if="${a.photoPath == null}" class="sidebar-avatar" style="width:40px; height:40px; font-size:15px;"
+                                 th:text="${#strings.substring(a.fullName,0,1)}"></div>
+                            <div>
+                                <div style="color:#e1bee7; font-weight:bold;" th:text="${a.fullName}"></div>
+                                <small style="color:#9575cd;" th:text="${a.currentJob} + ' at ' + ${a.company}"></small>
+                            </div>
+                            <span class="badge bg-success ms-auto">Alumni</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header fw-bold">🆕 Recently Joined Students</div>
+                    <div class="list-group list-group-flush">
+                        <div th:if="${recentStudents.empty}" class="list-group-item text-center" style="color:#9575cd;">No students yet</div>
+                        <a th:each="s : ${recentStudents}" th:href="@{/profile/{id}(id=${s.id})}"
+                           class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                            <img th:if="${s.photoPath != null}" th:src="@{/photos/{p}(p=${s.photoPath})}"
+                                 style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #0288d1;"/>
+                            <div th:if="${s.photoPath == null}" class="sidebar-avatar"
+                                 style="width:40px; height:40px; font-size:15px; background:linear-gradient(135deg,#1565c0,#0288d1);"
+                                 th:text="${#strings.substring(s.fullName,0,1)}"></div>
+                            <div>
+                                <div style="color:#e1bee7; font-weight:bold;" th:text="${s.fullName}"></div>
+                                <small style="color:#9575cd;" th:text="${s.department} + ' — ' + ${s.currentYear}"></small>
+                            </div>
+                            <span class="badge ms-auto text-white" style="background:#0288d1;">Student</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const companyData = /*[[${byCompany}]]*/ {};
+    const yearData = /*[[${byYear}]]*/ {};
+    const deptData = /*[[${byDept}]]*/ {};
+    const studentYearData = /*[[${byStudentYear}]]*/ {};
+
+    Chart.defaults.color = '#b39ddb';
+
+    new Chart(document.getElementById('companyChart'), {
+        type: 'doughnut',
+        data: { labels: Object.keys(companyData), datasets: [{ data: Object.values(companyData),
+            backgroundColor: ['#7c4dff','#ce93d8','#FF9800','#E91E63','#9C27B0','#00BCD4'] }] },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
+    });
+
+    new Chart(document.getElementById('yearChart'), {
+        type: 'bar',
+        data: { labels: Object.keys(yearData), datasets: [{ label: 'Alumni', data: Object.values(yearData), backgroundColor: '#7c4dff' }] },
+        options: { responsive: true, plugins: { legend: { display: false }}, scales: { x: { ticks: { color: '#b39ddb' }}, y: { ticks: { color: '#b39ddb' }}}}
+    });
+
+    new Chart(document.getElementById('deptChart'), {
+        type: 'doughnut',
+        data: { labels: Object.keys(deptData).length > 0 ? Object.keys(deptData) : ['No data'],
+            datasets: [{ data: Object.values(deptData).length > 0 ? Object.values(deptData) : [1],
+            backgroundColor: ['#1565c0','#0288d1','#26c6da','#4dd0e1','#80deea'] }] },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
+    });
+
+    new Chart(document.getElementById('studentYearChart'), {
+        type: 'bar',
+        data: { labels: Object.keys(studentYearData).length > 0 ? Object.keys(studentYearData) : ['No data'],
+            datasets: [{ label: 'Students', data: Object.values(studentYearData).length > 0 ? Object.values(studentYearData) : [0], backgroundColor: '#0288d1' }] },
+        options: { responsive: true, plugins: { legend: { display: false }}, scales: { x: { ticks: { color: '#b39ddb' }}, y: { ticks: { color: '#b39ddb' }}}}
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

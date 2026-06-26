@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Alumni</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+    
+
+    <div class="main-content">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"><h5 class="mb-0">✏️ Edit Profile</h5></div>
+                    <div class="card-body p-4">
+                        <form th:action="@{/edit/{id}(id=${alumni.id})}" th:object="${alumni}"
+                              method="post" enctype="multipart/form-data">
+
+                            <div class="mb-3" th:if="${alumni.photoPath != null}">
+                                <img th:src="@{/photos/{p}(p=${alumni.photoPath})}"
+                                     style="width:70px; height:70px; border-radius:50%;
+                                            object-fit:cover; border:2px solid #7c4dff;"/>
+                                <small style="color:#9575cd; margin-left:10px;">Current photo</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Full Name</label>
+                                <input th:field="*{fullName}" class="form-control" required/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <input th:field="*{email}" class="form-control" required/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Graduation Year</label>
+                                <input th:field="*{graduationYear}" class="form-control"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Current Job Title</label>
+                                <input th:field="*{currentJob}" class="form-control"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Company</label>
+                                <input th:field="*{company}" class="form-control"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Update Photo</label>
+                                <input type="file" name="photo" class="form-control" accept="image/*"/>
+                                <small style="color:#9575cd;">Leave empty to keep current photo</small>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary fw-bold">💾 Save Changes</button>
+                                <a href="/directory" class="btn"
+                                   style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">
+                                    ← Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

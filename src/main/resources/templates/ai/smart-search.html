@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AlumniHub - AI Smart Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="app-shell">
+
+    <div class="main-content">
+        <div class="d-flex gap-2 flex-wrap mb-3">
+            <a href="/ai/career" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">🤖 Career Advisor</a>
+            <a href="/ai/bio" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">📝 Bio Generator</a>
+            <a href="/ai/message-assist" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">✉️ Message Assistant</a>
+            <a href="/ai/search" class="btn btn-sm fw-bold text-white" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">🔍 Smart Search</a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header"><h4 class="mb-0">🔍 AI Smart Search</h4><small>Search alumni using natural language</small></div>
+                    <div class="card-body">
+                        <div class="alert alert-warning"><strong>Try:</strong> "Java developers" | "Alumni from 2024" | "Who works at TCS?"</div>
+                        <form th:action="@{/ai/search}" method="post">
+                            <div class="input-group">
+                                <input type="text" name="query" class="form-control form-control-lg" th:value="${query}" placeholder="Ask anything about alumni..." required/>
+                                <button class="btn fw-bold text-white" type="submit" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card" th:if="${result != null}">
+                    <div class="card-header">🎯 Results for: "<span th:text="${query}" style="color:#ce93d8;"></span>"</div>
+                    <div class="card-body">
+                        <div style="white-space:pre-wrap; line-height:1.8; color:#e1bee7;" th:text="${result}"></div>
+                    </div>
+                    <div class="card-footer"><a href="/directory" class="btn btn-success btn-sm">👥 Full Directory</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

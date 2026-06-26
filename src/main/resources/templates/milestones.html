@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MIRA AlumniHub - Milestone Wall</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/galaxy-theme.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="app-shell">
+    
+
+    <div class="main-content">
+		<div th:replace="~{fragments/celebration :: celebration}"></div>
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">🎉 Milestone Wall</div>
+                <div style="color:#9575cd; font-size:13px;">
+                    Celebrate promotions, achievements and good news!
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header"><h6 class="mb-0">✨ Share Your Milestone</h6></div>
+            <div class="card-body">
+                <form th:action="@{/milestones/add}" th:object="${milestone}" method="post">
+                    <div class="mb-3">
+                        <input th:field="*{title}" class="form-control"
+                               placeholder="e.g. Got promoted to Senior Engineer! 🎉" required/>
+                    </div>
+                    <div class="mb-3">
+                        <textarea th:field="*{description}" class="form-control" rows="2"
+                                  placeholder="Tell the community more (optional)..."></textarea>
+                    </div>
+                    <button type="submit" class="btn fw-bold text-white"
+                            style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">
+                        🎉 Post Milestone
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card text-center p-5" th:if="${milestones.empty}">
+            <h5 style="color:#9575cd;">No milestones shared yet. Be the first! 🎉</h5>
+        </div>
+
+        <div th:each="m : ${milestones}" class="card mb-3" style="border-left:4px solid #ce93d8 !important;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="d-flex gap-3">
+                        <div class="sidebar-avatar" th:text="${#strings.substring(m.posterName,0,1)}"></div>
+                        <div>
+                            <h6 style="color:#e1bee7; font-weight:bold; margin-bottom:2px;" th:text="${m.title}"></h6>
+                            <small style="color:#9575cd;" th:text="${m.posterName} + ' · ' + ${m.postedDate}"></small>
+                            <p style="color:#b39ddb; margin-top:8px;" th:text="${m.description}"></p>
+                        </div>
+                    </div>
+					<a href="javascript:void(0)"
+					   class="btn btn-sm btn-outline-danger"
+					   th:onclick="|openConfirm('/milestones/delete/${m.id}', 'Delete this milestone?', 'This will permanently remove it from the wall.')|">
+					   🗑️
+					</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:if="${param.posted}">
+    window.addEventListener('DOMContentLoaded', () => {
+        showCelebration('🎂', 'Milestone Shared!',
+            'Your achievement is now live on the wall. The community will love it!');
+    });
+</script>
+</body>
+</html>
