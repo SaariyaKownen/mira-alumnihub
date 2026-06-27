@@ -6,5 +6,5 @@ RUN chmod +x mvnw
 RUN ./mvnw dependency:resolve
 COPY src ./src
 RUN ./mvnw clean package -DskipTests
-EXPOSE 8080
-ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "target/portal-0.0.1-SNAPSHOT.jar"]
+EXPOSE 10000
+ENTRYPOINT ["sh", "-c", "java -jar target/portal-0.0.1-SNAPSHOT.jar --server.port=${PORT:-10000}"]
