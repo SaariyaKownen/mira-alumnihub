@@ -18,7 +18,7 @@ public class EventService {
     }
 
     public List<Event> getAllEvents() {
-        return eventRepository.findAllByOrderByEventDateAsc();
+        return eventRepository.findAll();
     }
 
     public List<Event> getUpcomingEvents() {
