@@ -291,3 +291,133 @@ h1,h2,h3,h4,h5,h6 { color: #e1bee7; }
     display: flex;
     pointer-events: all;
 }
+/* ===== MOBILE RESPONSIVENESS ===== */
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        overflow-y: visible;
+    }
+
+    .sidebar-brand {
+        margin-bottom: 8px;
+        font-size: 18px;
+    }
+
+    .sidebar-section-label {
+        display: none;
+    }
+
+    .sidebar-link {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin-bottom: 2px;
+        border-radius: 8px;
+    }
+
+    .sidebar-footer {
+        width: 100%;
+        padding-top: 8px;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sidebar-user {
+        margin-bottom: 0;
+        padding: 4px;
+    }
+
+    .sidebar-logout-btn {
+        width: auto;
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+
+    .app-shell {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 12px;
+        width: 100%;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .topbar-title {
+        font-size: 18px;
+    }
+
+    .card {
+        border-radius: 12px !important;
+    }
+
+    .row.g-3, .row.g-4 {
+        gap: 10px !important;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    .table td, .table th {
+        padding: 6px 8px !important;
+    }
+
+    h1 { font-size: 22px !important; }
+    h2 { font-size: 18px !important; }
+    h3 { font-size: 16px !important; }
+    h4 { font-size: 15px !important; }
+    h5 { font-size: 14px !important; }
+
+    .game-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        max-width: 100% !important;
+    }
+
+    .game-stats {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .stat-card-galaxy {
+        padding: 10px;
+    }
+
+    .celebrate-box {
+        max-width: 90vw !important;
+        padding: 24px 20px !important;
+    }
+
+    .chat-box {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-link {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+    .main-content {
+        padding: 8px;
+    }
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}

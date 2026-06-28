@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>MIRA AlumniHub - Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/galaxy-theme.css" rel="stylesheet"/>
@@ -102,58 +103,92 @@
             </div>
 
             <!-- Right Column -->
-            <div class="col-md-8">
-				<div class="card mb-3">
-				    <div class="card-header d-flex justify-content-between">
-				        <span>📝 Professional Bio</span>
-				        <a href="/ai/bio" class="btn btn-sm btn-success">
-				            ✨ Generate with AI
-				        </a>
-				    </div>
-				    <div class="card-body">
-				        <div th:if="${autoBio != null}">
-				            <p style="color:#e1bee7; line-height:1.8; font-size:14px;"
-				               th:text="${autoBio}"></p>
-				            <small style="color:#7e57c2;">
-				                ✦ AI Generated Bio — visit AI Hub to customize
-				            </small>
-				        </div>
-				        <div th:if="${autoBio == null}">
-				            <p style="color:#9575cd; font-style:italic;">
-				                No bio yet. Click "Generate with AI" to create a
-				                professional bio automatically! ✨
-				            </p>
-				        </div>
-				    </div>
-				</div>
+			<div class="card mb-3">
+			    <div class="card-header d-flex justify-content-between align-items-center">
+			        <span>📝 Professional Bio</span>
+			        <div class="d-flex gap-2">
+			            <a href="/ai/bio" class="btn btn-sm btn-success">
+			                ✨ Generate with AI
+			            </a>
+			            <button type="button" class="btn btn-sm"
+			                    style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;"
+			                    th:if="${alumni.email == currentUser.email}"
+			                    onclick="toggleBioEdit()">
+			                ✏️ Edit
+			            </button>
+			        </div>
+			    </div>
+			    <div class="card-body">
+			        <!-- Display Mode -->
+			        <div id="bioDisplay">
+			            <div th:if="${alumni.bio != null and !#strings.isEmpty(alumni.bio)}">
+			                <p style="color:#e1bee7; line-height:1.8; font-size:14px;"
+			                   th:text="${alumni.bio}"></p>
+			            </div>
+			            <div th:if="${autoBio != null and (alumni.bio == null or #strings.isEmpty(alumni.bio))}">
+			                <p style="color:#e1bee7; line-height:1.8; font-size:14px;"
+			                   th:text="${autoBio}"></p>
+			                <small style="color:#7e57c2;">
+			                    ✦ AI Generated — click Edit to save this as your bio
+			                </small>
+			            </div>
+			            <div th:if="${alumni.bio == null or #strings.isEmpty(alumni.bio)}">
+			                <p th:if="${autoBio == null}"
+			                   style="color:#9575cd; font-style:italic;">
+			                    No bio yet. Click "Generate with AI" or "Edit" to add one! ✨
+			                </p>
+			            </div>
+			        </div>
+			        <!-- Edit Mode -->
+			        <div id="bioEdit" style="display:none;">
+			            <form th:action="@{/profile/save-bio/{id}(id=${alumni.id})}"
+			                  method="post">
+			                <textarea name="bio" id="bioTextarea" rows="5"
+			                          class="form-control mb-2"
+			                          placeholder="Write your professional bio here..."
+			                          th:text="${alumni.bio != null ? alumni.bio : (autoBio != null ? autoBio : '')}"></textarea>
+			                <div class="d-flex gap-2">
+			                    <button type="submit" class="btn btn-success btn-sm">
+			                        💾 Save Bio
+			                    </button>
+			                    <button type="button" class="btn btn-sm"
+			                            style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;"
+			                            onclick="toggleBioEdit()">
+			                        Cancel
+			                    </button>
+			                </div>
+			            </form>
+			        </div>
+			    </div>
+			</div>
 
-				<div class="card mb-3">
-				    <div class="card-header d-flex justify-content-between">
-				        <span>🤖 AI Career Insights</span>
-				        <a href="/ai/career" class="btn btn-sm btn-success">
-				            Full Advice →
-				        </a>
-				    </div>
-				    <div class="card-body">
-				        <div th:if="${autoCareer != null}">
-				            <p style="color:#e1bee7; line-height:1.9;
-				                      font-size:14px; white-space:pre-line;"
-				               th:text="${autoCareer}"></p>
-				            <small style="color:#7e57c2;">
-				                ✦ AI Career Tips — powered by Gemini
-				            </small>
-				        </div>
-				        <div th:if="${autoCareer == null}">
-				            <p style="color:#9575cd;">
-				                Get personalized career advice, skill recommendations
-				                and next role suggestions powered by AI!
-				            </p>
-				            <a href="/ai/career" class="btn btn-success btn-sm">
-				                🚀 Get My Career Advice
-				            </a>
-				        </div>
-				    </div>
-				</div>
+			<div class="card mb-3">
+			    <div class="card-header d-flex justify-content-between align-items-center">
+			        <span>🤖 AI Career Insights</span>
+			        <a href="/ai/career" class="btn btn-sm btn-success">
+			            Full Advice →
+			        </a>
+			    </div>
+			    <div class="card-body">
+			        <div th:if="${autoCareer != null}">
+			            <p style="color:#e1bee7; line-height:1.9; font-size:14px;
+			                      white-space:pre-line;"
+			               th:text="${autoCareer}"></p>
+			            <small style="color:#7e57c2;">
+			                ✦ AI Career Tips — powered by Gemini
+			            </small>
+			        </div>
+			        <div th:if="${autoCareer == null}">
+			            <p style="color:#9575cd;">
+			                Get personalized career advice, skill recommendations
+			                and next role suggestions powered by AI!
+			            </p>
+			            <a href="/ai/career" class="btn btn-success btn-sm">
+			                🚀 Get My Career Advice
+			            </a>
+			        </div>
+			    </div>
+			</div>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <span>💼 Job Opportunities</span>
@@ -173,5 +208,18 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleBioEdit() {
+    const display = document.getElementById('bioDisplay');
+    const edit = document.getElementById('bioEdit');
+    if (edit.style.display === 'none') {
+        edit.style.display = 'block';
+        display.style.display = 'none';
+    } else {
+        edit.style.display = 'none';
+        display.style.display = 'block';
+    }
+}
+</script>
 </body>
 </html>

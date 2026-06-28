@@ -1,6 +1,5 @@
 package com.alumni.portal.controller;
 
-import com.alumni.portal.model.Event;
 import com.alumni.portal.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +15,10 @@ public class EventController {
 
     @GetMapping("")
     public String events(Model model) {
-        model.addAttribute("upcomingEvents", eventService.getUpcomingEvents());
-        model.addAttribute("allEvents", eventService.getAllEvents());
+        model.addAttribute("upcomingEvents",
+            eventService.getAllEvents());
+        model.addAttribute("allEvents",
+            eventService.getAllEvents());
         return "events";
     }
 }

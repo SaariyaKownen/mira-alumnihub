@@ -268,5 +268,18 @@ public class AlumniController {
         adminRepository.save(admin);
         return "Admin created! Email: admin@alumnihub.com / Password: Admin@123";
     }
+    @Autowired
+    com.alumni.portal.repository.AlumniRepository alumniRepository;
+    @PostMapping("/profile/save-bio/{id}")
+    public String saveBio(@PathVariable Long id,
+                          @RequestParam String bio,
+                          Authentication auth) {
+        Alumni alumni = alumniService.getAlumniById(id);
+        if (alumni.getEmail().equals(auth.getName())) {
+            alumni.setBio(bio);
+            alumniRepository.save(alumni);
+        }
+        return "redirect:/profile/" + id;
+    }
     
 }
