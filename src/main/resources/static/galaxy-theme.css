@@ -291,98 +291,104 @@ h1,h2,h3,h4,h5,h6 { color: #e1bee7; }
     display: flex;
     pointer-events: all;
 }
-/* ===== MOBILE RESPONSIVENESS ===== */
-@media (max-width: 768px) {
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 900px) {
+
+    /* Sidebar becomes top horizontal bar */
+    .app-shell {
+        flex-direction: column !important;
+    }
 
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 10px;
-        overflow-y: visible;
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        padding: 10px 12px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        align-items: center !important;
+        overflow-y: visible !important;
     }
 
     .sidebar-brand {
-        margin-bottom: 8px;
-        font-size: 18px;
-    }
-
-    .sidebar-section-label {
-        display: none;
+        font-size: 16px !important;
+        margin-bottom: 0 !important;
+        margin-right: 8px !important;
     }
 
     .sidebar-link {
-        padding: 6px 10px;
-        font-size: 12px;
-        margin-bottom: 2px;
-        border-radius: 8px;
+        padding: 5px 10px !important;
+        font-size: 12px !important;
+        margin-bottom: 0 !important;
+        border-radius: 8px !important;
+    }
+
+    .sidebar-section-label {
+        display: none !important;
     }
 
     .sidebar-footer {
-        width: 100%;
-        padding-top: 8px;
-        margin-top: 6px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        width: 100% !important;
+        margin-top: 6px !important;
+        padding-top: 6px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px !important;
     }
 
     .sidebar-user {
-        margin-bottom: 0;
-        padding: 4px;
+        margin-bottom: 0 !important;
+        padding: 4px !important;
+    }
+
+    .sidebar-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 12px !important;
     }
 
     .sidebar-logout-btn {
-        width: auto;
-        padding: 6px 14px;
-        font-size: 12px;
+        width: auto !important;
+        padding: 5px 12px !important;
+        font-size: 11px !important;
     }
 
-    .app-shell {
-        flex-direction: column;
-    }
-
+    /* Main content full width */
     .main-content {
         margin-left: 0 !important;
-        padding: 12px;
-        width: 100%;
-    }
-
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 12px;
+        padding: 12px !important;
+        width: 100% !important;
+        min-height: auto !important;
     }
 
     .topbar-title {
-        font-size: 18px;
+        font-size: 17px !important;
     }
 
+    /* Cards */
     .card {
-        border-radius: 12px !important;
+        border-radius: 10px !important;
     }
 
-    .row.g-3, .row.g-4 {
-        gap: 10px !important;
+    /* Tables scroll horizontally */
+    .table-responsive {
+        overflow-x: auto !important;
     }
 
     table {
-        font-size: 12px;
+        font-size: 12px !important;
+        min-width: 500px !important;
     }
 
-    .table td, .table th {
-        padding: 6px 8px !important;
+    /* Stat cards */
+    .stat-card-galaxy {
+        padding: 10px !important;
     }
 
-    h1 { font-size: 22px !important; }
-    h2 { font-size: 18px !important; }
-    h3 { font-size: 16px !important; }
-    h4 { font-size: 15px !important; }
-    h5 { font-size: 14px !important; }
-
+    /* Game grid */
     .game-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 8px !important;
@@ -390,34 +396,51 @@ h1,h2,h3,h4,h5,h6 { color: #e1bee7; }
     }
 
     .game-stats {
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
     }
 
-    .stat-card-galaxy {
-        padding: 10px;
-    }
-
-    .celebrate-box {
-        max-width: 90vw !important;
-        padding: 24px 20px !important;
-    }
-
+    /* Chat */
     .chat-box {
-        height: 300px !important;
+        height: 280px !important;
     }
+
+    /* Forms */
+    .form-control, .form-select {
+        font-size: 14px !important;
+    }
+
+    /* Celebration box */
+    .celebrate-box {
+        max-width: 88vw !important;
+        padding: 20px !important;
+    }
+
+    /* Headings */
+    h1 { font-size: 20px !important; }
+    h2 { font-size: 18px !important; }
+    h3 { font-size: 16px !important; }
+    h4 { font-size: 15px !important; }
+    h5 { font-size: 14px !important; }
+    h6 { font-size: 13px !important; }
 }
 
 @media (max-width: 480px) {
     .sidebar-link {
-        font-size: 11px;
-        padding: 5px 8px;
+        font-size: 11px !important;
+        padding: 4px 8px !important;
     }
+
     .main-content {
-        padding: 8px;
+        padding: 8px !important;
     }
+
     .game-grid {
         grid-template-columns: repeat(2, 1fr) !important;
     }
+
+    table {
+        font-size: 11px !important;
+    }
+}
 }
