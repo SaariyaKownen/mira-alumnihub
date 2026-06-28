@@ -254,5 +254,19 @@ public class AlumniController {
         Alumni me = alumniService.getAlumniByEmail(auth.getName());
         return "redirect:/profile/" + me.getId();
     }
+    @Autowired
+    org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    @Autowired
+    com.alumni.portal.repository.AdminRepository adminRepository;
+    @GetMapping("/setup-admin")
+    public String setupAdmin() {
+        com.alumni.portal.model.Admin admin = new com.alumni.portal.model.Admin();
+        admin.setEmail("admin@alumnihub.com");
+        admin.setPassword(passwordEncoder.encode("Admin@123"));
+        admin.setFullName("College Admin");
+        adminRepository.save(admin);
+        return "Admin created! Email: admin@alumnihub.com / Password: Admin@123";
+    }
     
 }
