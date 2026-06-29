@@ -1,66 +1,46 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <body>
 <aside th:fragment="navbar" class="sidebar">
 
     <a href="/home" class="sidebar-brand">🎓 MIRA AlumniHub</a>
 
-    <a href="/home" class="sidebar-link">
-        🏠 Home
-    </a>
-    <a href="/directory" class="sidebar-link">
-        👥 Directory
-    </a>
-    <a href="/students" class="sidebar-link">
-        🎒 Students
-    </a>
-    <a href="/jobs" class="sidebar-link">
-        💼 Jobs
-    </a>
-    <a href="/events" class="sidebar-link">
-        🎉 Events
-    </a>
-    <a href="/messages" class="sidebar-link">
-        💬 Messages
-    </a>
-	<a href="/game" class="sidebar-link">
-	    🎮 Memory Game
-	</a>
-	<a href="/leaderboard" class="sidebar-link">
-	    🏆 Leaderboard
-	</a>
-	<a href="/quiz" class="sidebar-link">
-	    🔥 Daily Quiz
-	</a>
-	<a href="/milestones" class="sidebar-link">
-	    🎂 Milestone Wall
-	</a>
+    <div class="sidebar-links">
+        <a href="/home" class="sidebar-link">🏠 Home</a>
+        <a href="/directory" class="sidebar-link">👥 Directory</a>
+        <a href="/students" class="sidebar-link">🎒 Students</a>
+        <a href="/jobs" class="sidebar-link">💼 Jobs</a>
+        <a href="/events" class="sidebar-link">🎉 Events</a>
+        <a href="/messages" class="sidebar-link">💬 Messages</a>
+        <a href="/game" class="sidebar-link">🎮 Memory Game</a>
+        <a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
+        <a href="/quiz" class="sidebar-link">🔥 Daily Quiz</a>
+        <a href="/milestones" class="sidebar-link">🎂 Milestone Wall</a>
 
-    <div class="sidebar-section-label">Insights</div>
-    <a href="/admin/dashboard" class="sidebar-link">
-        📊 Dashboard
-    </a>
-	<a href="/ai/career" class="sidebar-link sidebar-ai-link">
-        🤖 AI Hub
-    </a>
-	<a href="/admin/control" class="sidebar-link"
-	   style="border:1px solid rgba(255,215,0,0.3); color:#ffd700;">
-	    🛡️ Admin Panel
-	</a>
+        <div class="sidebar-section-label">Insights</div>
+        <a href="/admin/dashboard" class="sidebar-link">📊 Dashboard</a>
+        <a href="/ai/career" class="sidebar-link sidebar-ai-link">🤖 AI Hub</a>
+        <a href="/admin/control" class="sidebar-link"
+           style="border:1px solid rgba(255,215,0,0.3); color:#ffd700;">
+            🛡️ Admin Panel
+        </a>
+    </div>
 
-	<a href="/my-account" style="text-decoration:none;">
-	    <div class="sidebar-user" style="cursor:pointer;">
-	        <div class="sidebar-avatar">👤</div>
-	        <div>
-	            <div style="font-size:13px; color:#e1bee7; font-weight:bold;">
-	                My Account
-	            </div>
-	            <div style="font-size:11px; color:#9575cd;">
-	                View &amp; edit my profile
-	            </div>
-	        </div>
-	    </div>
-	</a>
+    <div class="sidebar-footer">
+        <a href="/my-account" style="text-decoration:none; flex:1;">
+            <div class="sidebar-user">
+                <div class="sidebar-avatar">👤</div>
+                <div>
+                    <div style="font-size:13px; color:#e1bee7; font-weight:bold;">
+                        My Account
+                    </div>
+                    <div style="font-size:11px; color:#9575cd;">
+                        View &amp; edit my profile
+                    </div>
+                </div>
+            </div>
+        </a>
         <form th:action="@{/logout}" method="post" class="m-0">
             <button class="sidebar-logout-btn">🚪 Logout</button>
         </form>
