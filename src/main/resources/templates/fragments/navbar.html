@@ -1,43 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-<aside th:fragment="navbar" class="sidebar">
+<aside th:fragment="navbar">
 
+<!-- ===== DESKTOP SIDEBAR ===== -->
+<div class="sidebar desktop-sidebar">
     <a href="/home" class="sidebar-brand">🎓 MIRA AlumniHub</a>
 
-    <div class="sidebar-links">
-        <a href="/home" class="sidebar-link">🏠 Home</a>
-        <a href="/directory" class="sidebar-link">👥 Directory</a>
-        <a href="/students" class="sidebar-link">🎒 Students</a>
-        <a href="/jobs" class="sidebar-link">💼 Jobs</a>
-        <a href="/events" class="sidebar-link">🎉 Events</a>
-        <a href="/messages" class="sidebar-link">💬 Messages</a>
-        <a href="/game" class="sidebar-link">🎮 Memory Game</a>
-        <a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
-        <a href="/quiz" class="sidebar-link">🔥 Daily Quiz</a>
-        <a href="/milestones" class="sidebar-link">🎂 Milestone Wall</a>
+    <a href="/home" class="sidebar-link">🏠 Home</a>
+    <a href="/directory" class="sidebar-link">👥 Directory</a>
+    <a href="/students" class="sidebar-link">🎒 Students</a>
+    <a href="/jobs" class="sidebar-link">💼 Jobs</a>
+    <a href="/events" class="sidebar-link">🎉 Events</a>
+    <a href="/messages" class="sidebar-link">💬 Messages</a>
+    <a href="/game" class="sidebar-link">🎮 Memory Game</a>
+    <a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
+    <a href="/quiz" class="sidebar-link">🔥 Daily Quiz</a>
+    <a href="/milestones" class="sidebar-link">🎂 Milestone Wall</a>
 
-        <div class="sidebar-section-label">Insights</div>
-        <a href="/admin/dashboard" class="sidebar-link">📊 Dashboard</a>
-        <a href="/ai/career" class="sidebar-link sidebar-ai-link">🤖 AI Hub</a>
-        <a href="/admin/control" class="sidebar-link"
-           style="border:1px solid rgba(255,215,0,0.3); color:#ffd700;">
-            🛡️ Admin Panel
-        </a>
-    </div>
+    <div class="sidebar-section-label">Insights</div>
+    <a href="/admin/dashboard" class="sidebar-link">📊 Dashboard</a>
+    <a href="/ai/career" class="sidebar-link sidebar-ai-link">🤖 AI Hub</a>
+    <a href="/admin/control" class="sidebar-link"
+       style="border:1px solid rgba(255,215,0,0.3); color:#ffd700;">
+        🛡️ Admin Panel
+    </a>
 
     <div class="sidebar-footer">
         <a href="/my-account" style="text-decoration:none; flex:1;">
             <div class="sidebar-user">
                 <div class="sidebar-avatar">👤</div>
                 <div>
-                    <div style="font-size:13px; color:#e1bee7; font-weight:bold;">
-                        My Account
-                    </div>
-                    <div style="font-size:11px; color:#9575cd;">
-                        View &amp; edit my profile
-                    </div>
+                    <div style="font-size:13px; color:#e1bee7; font-weight:bold;">My Account</div>
+                    <div style="font-size:11px; color:#9575cd;">View &amp; edit my profile</div>
                 </div>
             </div>
         </a>
@@ -45,6 +40,70 @@
             <button class="sidebar-logout-btn">🚪 Logout</button>
         </form>
     </div>
+</div>
+
+<!-- ===== MOBILE TOP NAVBAR ===== -->
+<nav class="mobile-navbar">
+    <a href="/home" class="mobile-brand">🎓 MIRA AlumniHub</a>
+    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- Mobile Drawer Menu -->
+<div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+        <span style="color:#ce93d8; font-weight:bold;">Menu</span>
+        <button onclick="toggleMobileMenu()"
+                style="background:none; border:none; color:#ce93d8;
+                       font-size:22px; cursor:pointer;">✕</button>
+    </div>
+    <div class="mobile-drawer-links">
+        <a href="/home" class="mobile-link">🏠 Home</a>
+        <a href="/directory" class="mobile-link">👥 Directory</a>
+        <a href="/students" class="mobile-link">🎒 Students</a>
+        <a href="/jobs" class="mobile-link">💼 Jobs</a>
+        <a href="/events" class="mobile-link">🎉 Events</a>
+        <a href="/messages" class="mobile-link">💬 Messages</a>
+        <a href="/game" class="mobile-link">🎮 Memory Game</a>
+        <a href="/leaderboard" class="mobile-link">🏆 Leaderboard</a>
+        <a href="/quiz" class="mobile-link">🔥 Daily Quiz</a>
+        <a href="/milestones" class="mobile-link">🎂 Milestone Wall</a>
+        <a href="/admin/dashboard" class="mobile-link">📊 Dashboard</a>
+        <a href="/ai/career" class="mobile-link"
+           style="background:linear-gradient(135deg,rgba(124,77,255,0.3),rgba(206,147,216,0.2));">
+            🤖 AI Hub
+        </a>
+        <a href="/admin/control" class="mobile-link"
+           style="color:#ffd700;">🛡️ Admin Panel</a>
+        <a href="/my-account" class="mobile-link">👤 My Account</a>
+    </div>
+    <div style="padding:16px;">
+        <form th:action="@{/logout}" method="post">
+            <button style="width:100%; background:rgba(239,83,80,0.2);
+                           color:#ef5350; border:1px solid rgba(239,83,80,0.4);
+                           border-radius:10px; padding:10px;
+                           font-weight:bold; cursor:pointer;">
+                🚪 Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="drawer-overlay" id="drawerOverlay"
+     onclick="toggleMobileMenu()"></div>
+
+<script>
+function toggleMobileMenu() {
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const btn = document.getElementById('hamburgerBtn');
+    drawer.classList.toggle('open');
+    overlay.classList.toggle('show');
+    btn.classList.toggle('active');
+}
+</script>
 
 </aside>
 </body>
