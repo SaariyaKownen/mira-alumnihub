@@ -13,6 +13,7 @@
 <div class="app-shell">
 
     <div class="main-content">
+		<div th:replace="~{fragments/celebration :: celebration}"></div>
 
         <div class="topbar">
             <div class="topbar-title">💼 Job Board</div>
@@ -74,9 +75,11 @@
                     <div class="d-flex flex-column gap-2">
                         <a th:href="${job.applyLink}" class="btn btn-sm btn-primary" target="_blank"
                            th:if="${job.applyLink != null and job.applyLink != ''}">🔗 Apply Now</a>
-						   <a th:href="@{/jobs/delete/{id}(id=${job.id})}"
+						   <a href="javascript:void(0)"
 						      class="btn btn-sm btn-danger"
-						      onclick="return confirm('Delete this job?')">
+						      th:onclick="|openConfirm('/jobs/delete/${job.id}',
+						      'Delete this job?',
+						      'This will remove it from the job board.')|">
 						      🗑️ Delete
 						   </a>
                     </div>

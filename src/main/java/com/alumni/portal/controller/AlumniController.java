@@ -183,16 +183,23 @@ public class AlumniController {
     }
 
     // Serve Photos
-    @GetMapping("/photos/{filename}")
+    @GetMapping("/photos/{filename:.+}")
     public ResponseEntity<Resource> servePhoto(
-            @PathVariable String filename) throws Exception {
-        Path filePath = Paths.get(uploadDir).resolve(filename);
-        Resource resource = new UrlResource(filePath.toUri());
-        return ResponseEntity.ok()
-            .contentType(MediaType.IMAGE_JPEG)
-            .body(resource);
+            @PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(uploadDir).resolve(filename);
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-
     // Edit Alumni
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model,

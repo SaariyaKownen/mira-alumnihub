@@ -12,6 +12,7 @@
 <div class="app-shell">
 
     <div class="main-content">
+		<div th:replace="~{fragments/celebration :: celebration}"></div>
         <div class="d-flex gap-2 flex-wrap mb-3">
             <a href="/ai/career" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">🤖 Career Advisor</a>
             <a href="/ai/bio" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">📝 Bio Generator</a>
@@ -49,7 +50,7 @@
                     </div>
                     <div class="card-footer d-flex gap-2">
                         <button class="btn btn-sm" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;"
-                                onclick="navigator.clipboard.writeText(document.getElementById('msgContent').innerText); alert('Copied!')">📋 Copy</button>
+onclick="copyToClipboard(document.getElementById('msgContent').innerText, 'Message')"
                         <a th:href="@{/messages/chat/{e}(e=${selectedReceiver})}" class="btn btn-success btn-sm">💬 Send This Message</a>
                     </div>
                 </div>

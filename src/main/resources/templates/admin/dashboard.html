@@ -112,10 +112,9 @@
                         <div th:if="${recentAlumni.empty}" class="list-group-item text-center" style="color:#9575cd;">No alumni yet</div>
                         <a th:each="a : ${recentAlumni}" th:href="@{/profile/{id}(id=${a.id})}"
                            class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
-                            <img th:if="${a.photoPath != null}" th:src="@{/photos/{p}(p=${a.photoPath})}"
-                                 style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #7c4dff;"/>
-                            <div th:if="${a.photoPath == null}" class="sidebar-avatar" style="width:40px; height:40px; font-size:15px;"
-                                 th:text="${#strings.substring(a.fullName,0,1)}"></div>
+						   <div class="sidebar-avatar"
+						        style="width:36px; height:36px; font-size:14px;"
+						        th:text="${#strings.substring(a.fullName,0,1)}"></div>
                             <div>
                                 <div style="color:#e1bee7; font-weight:bold;" th:text="${a.fullName}"></div>
                                 <small style="color:#9575cd;" th:text="${a.currentJob} + ' at ' + ${a.company}"></small>

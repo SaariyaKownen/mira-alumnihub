@@ -61,7 +61,9 @@
                     </div>
 					<a href="javascript:void(0)"
 					   class="btn btn-sm btn-outline-danger"
-					   th:onclick="|openConfirm('/milestones/delete/${m.id}', 'Delete this milestone?', 'This will permanently remove it from the wall.')|">
+					   th:onclick="|openConfirm('/milestones/delete/${m.id}',
+					   'Delete this milestone?',
+					   'This will permanently remove it from the wall.')|">
 					   🗑️
 					</a>
             </div>

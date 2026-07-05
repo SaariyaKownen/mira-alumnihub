@@ -41,17 +41,9 @@
                 <div class="card h-100" style="border-top:4px solid #0288d1 !important;">
                     <div class="card-body text-center p-4">
 
-                        <img th:if="${student.photoPath != null}"
-                             th:src="@{/photos/{p}(p=${student.photoPath})}"
-                             style="width:70px; height:70px; border-radius:50%;
-                                    object-fit:cover; border:3px solid #0288d1;"
-                             class="mb-3"/>
-                        <div th:if="${student.photoPath == null}"
-                             class="sidebar-avatar"
-                             style="width:70px; height:70px; font-size:28px;
-                                    background:linear-gradient(135deg,#1565c0,#0288d1);
-                                    margin:0 auto 12px;"
-                             th:text="${#strings.substring(student.fullName,0,1)}"></div>
+						<div class="sidebar-avatar"
+						     style="width:36px; height:36px; font-size:14px;"
+						     th:text="${#strings.substring(a.fullName,0,1)}"></div>
 
                         <h5 style="color:#e1bee7; font-weight:bold;" th:text="${student.fullName}"></h5>
                         <span class="badge mb-2 text-white"

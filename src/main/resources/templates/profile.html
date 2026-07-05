@@ -17,14 +17,9 @@
         <!-- Profile Header -->
         <div class="card p-4 mb-4">
             <div class="d-flex align-items-center gap-4 flex-wrap">
-                <img th:if="${alumni.photoPath != null}"
-                     th:src="@{/photos/{p}(p=${alumni.photoPath})}"
-                     style="width:100px; height:100px; border-radius:50%;
-                            object-fit:cover; border:3px solid #7c4dff;"/>
-                <div th:if="${alumni.photoPath == null}"
-                     class="sidebar-avatar"
-                     style="width:100px; height:100px; font-size:38px;"
-                     th:text="${#strings.substring(alumni.fullName,0,1)}"></div>
+				<div class="sidebar-avatar"
+				     style="width:36px; height:36px; font-size:14px;"
+				     th:text="${#strings.substring(a.fullName,0,1)}"></div>
 
                 <div>
                     <h3 style="color:#e1bee7; font-weight:bold;" th:text="${alumni.fullName}"></h3>

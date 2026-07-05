@@ -12,6 +12,7 @@
 <div class="app-shell">
  
     <div class="main-content">
+		<div th:replace="~{fragments/celebration :: celebration}"></div>
         <div class="d-flex gap-2 flex-wrap mb-3">
             <a href="/ai/career" class="btn btn-sm fw-bold" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;">🤖 Career Advisor</a>
             <a href="/ai/bio" class="btn btn-sm fw-bold text-white" style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">📝 Bio Generator</a>
@@ -37,7 +38,7 @@
                     </div>
                     <div class="card-footer">
                         <button class="btn btn-sm" style="border:1px solid rgba(206,147,216,0.3); color:#ce93d8;"
-                                onclick="navigator.clipboard.writeText(document.getElementById('bioContent').innerText); alert('Copied!')">📋 Copy Bio</button>
+onclick="copyToClipboard(document.getElementById('bioContent').innerText, 'Bio')"
                         <a href="/ai/career" class="btn btn-success btn-sm ms-2">🤖 Career Advice</a>
                     </div>
                 </div>

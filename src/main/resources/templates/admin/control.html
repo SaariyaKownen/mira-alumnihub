@@ -13,6 +13,7 @@
     
 
     <div class="main-content">
+		<div th:replace="~{fragments/celebration :: celebration}"></div>
 
         <div class="topbar">
             <div>
@@ -115,12 +116,13 @@
 		                              style="background:linear-gradient(135deg,#1565c0,#0288d1); color:white;">Student</span>
 		                    </td>
 		                    <td>
-								<a th:href="@{/admin/control/delete-person/{id}(id=${p.id})}"
+								<a href="javascript:void(0)"
 								   class="btn btn-danger btn-sm"
-								   onclick="return confirm('Delete this account?')">
+								   th:onclick="|openConfirm('/admin/control/delete-person/${p.id}',
+								   'Delete this account?',
+								   'This will permanently remove this person from MIRA AlumniHub.')|">
 								   🗑️ Delete
 								</a>
-		                    </td>
 		                </tr>
 		            </tbody>
 		        </table>
@@ -142,9 +144,11 @@
                             <td th:text="${ev.venue}"></td>
                             <td th:text="${ev.organizer}"></td>
                             <td>
-								<a th:href="@{/admin/control/delete-event/{id}(id=${ev.id})}"
+								<a href="javascript:void(0)"
 								   class="btn btn-danger btn-sm"
-								   onclick="return confirm('Delete this event?')">
+								   th:onclick="|openConfirm('/admin/control/delete-event/${ev.id}',
+								   'Delete this event?',
+								   'Students and alumni will no longer see it.')|">
 								   🗑️
 								</a>
                             </td>

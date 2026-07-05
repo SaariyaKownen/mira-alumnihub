@@ -439,3 +439,6 @@ h1,h2,h3,h4,h5,h6 { color: #e1bee7; }
     }
     table { font-size: 11px !important; }
 }
+img[src="/photos/"] {
+    display: none !important;
+}

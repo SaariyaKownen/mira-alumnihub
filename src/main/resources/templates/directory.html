@@ -52,14 +52,9 @@
                             <td th:text="${i.count}"></td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <img th:if="${a.photoPath != null}"
-                                         th:src="@{/photos/{p}(p=${a.photoPath})}"
-                                         style="width:36px; height:36px; border-radius:50%;
-                                                object-fit:cover; border:2px solid #7c4dff;"/>
-                                    <div th:if="${a.photoPath == null}"
-                                         class="sidebar-avatar"
-                                         style="width:36px; height:36px; font-size:14px;"
-                                         th:text="${#strings.substring(a.fullName,0,1)}"></div>
+									<div class="sidebar-avatar"
+									     style="width:36px; height:36px; font-size:14px;"
+									     th:text="${#strings.substring(a.fullName,0,1)}"></div>
                                     <a th:href="@{/profile/{id}(id=${a.id})}"
                                        style="color:#ce93d8; font-weight:bold; text-decoration:none;"
                                        th:text="${a.fullName}"></a>
