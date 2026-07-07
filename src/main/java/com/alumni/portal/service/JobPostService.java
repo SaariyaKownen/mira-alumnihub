@@ -28,5 +28,9 @@ public class JobPostService {
 
     public void deleteJob(Long id) {
         jobPostRepository.deleteById(id);
+ 
+   }
+    public com.alumni.portal.model.JobPost getJobById(Long id) {
+        return jobPostRepository.findById(id).orElse(null);
     }
 }

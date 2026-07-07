@@ -75,8 +75,8 @@
                     <div class="d-flex flex-column gap-2">
                         <a th:href="${job.applyLink}" class="btn btn-sm btn-primary" target="_blank"
                            th:if="${job.applyLink != null and job.applyLink != ''}">🔗 Apply Now</a>
-						   <a href="javascript:void(0)"
-						      class="btn btn-sm btn-danger"
+						   <a href="javascript:void(0)" class="btn btn-sm btn-danger"
+						      th:if="${#authentication.name == job.postedBy or #authorization.expression('hasRole(''ADMIN'')')}"
 						      th:onclick="|openConfirm('/jobs/delete/${job.id}',
 						      'Delete this job?',
 						      'This will remove it from the job board.')|">

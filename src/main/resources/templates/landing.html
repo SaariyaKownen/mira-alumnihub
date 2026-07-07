@@ -37,6 +37,16 @@
             padding:14px 0;
             position:sticky; top:0; z-index:100;
         }
+		.top-nav {
+		    background: rgba(13,13,43,0.9);
+		    border-bottom: 1px solid rgba(206,147,216,0.2);
+		    backdrop-filter: blur(10px);
+		    padding: 12px 0;
+		    position: sticky;
+		    top: 0;
+		    z-index: 100;
+		}
+		.nav-brand { font-size: 18px; }
         .nav-brand {
             background:linear-gradient(135deg,#ce93d8,#7c4dff);
             -webkit-background-clip:text;
@@ -171,6 +181,41 @@
             border-top:1px solid rgba(206,147,216,0.15);
             padding:40px 0 20px;
         }
+		@media (max-width: 768px) {
+		    .top-nav .container {
+		        flex-wrap: wrap;
+		        gap: 8px;
+		        padding: 0 12px;
+		    }
+		    .nav-brand { font-size: 16px; }
+		    .nav-link-pill { 
+		        font-size: 11px; 
+		        padding: 4px 10px;
+		    }
+		    .nav-join {
+		        font-size: 11px;
+		        padding: 4px 12px;
+		    }
+		    .hero { padding: 30px 0 20px; }
+		    .hero-title { font-size: 28px; }
+		    .hero-sub { font-size: 14px; }
+		    .btn-primary-galaxy, .btn-outline-galaxy {
+		        padding: 10px 20px;
+		        font-size: 13px;
+		    }
+		    .stat-box { padding: 16px 10px; }
+		    .stat-num { font-size: 2rem; }
+		    .feat-card { padding: 18px 14px; }
+		    .ai-section { padding: 24px 16px; }
+		    .cta-section { padding: 30px 16px; }
+		    .mx-4 { margin-left: 12px !important; margin-right: 12px !important; }
+		    .hero-title { font-size: 26px !important; }
+		    .col-lg-6 { padding: 0 8px; }
+		    /* Hide large emoji on mobile */
+		    .col-lg-6 div[style*="font-size:130px"] { 
+		        font-size: 70px !important; 
+		    }
+		}
     </style>
 </head>
 <body>

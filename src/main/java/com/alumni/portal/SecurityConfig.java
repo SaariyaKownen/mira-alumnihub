@@ -18,14 +18,19 @@ public class SecurityConfig {
     }
 
     @Bean
-      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/", "/register", "/register-student",
-                            "/login", "/photos/**", "/*.css",
-                            "/static/**", "/403", "/error","/setup-admin").permitAll()
-                .requestMatchers("/events/add", "/events/delete/**",
-                                 "/admin/control").hasRole("ADMIN")
+                .requestMatchers(
+                    "/", "/register", "/register-student",
+                    "/login", "/photos/**", "/*.css",
+                    "/static/**", "/403", "/error",
+                    "/setup-admin"
+                ).permitAll()
+                .requestMatchers(
+                    "/admin/control",
+                    "/admin/control/**"
+                ).hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -38,11 +43,13 @@ public class SecurityConfig {
                 .permitAll()
             )
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/ai/**")
+                .ignoringRequestMatchers(
+                    "/ai/**", "/quiz/**", "/profile/**"
+                )
+            )
+            .exceptionHandling(ex -> ex
+                .accessDeniedPage("/403")
             );
-          http.exceptionHandling(ex -> ex
-        	    .accessDeniedPage("/403")
-        	);
         return http.build();
     }
 }

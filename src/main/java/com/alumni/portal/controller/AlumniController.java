@@ -243,8 +243,14 @@ public class AlumniController {
     }
 
     @GetMapping("/jobs/delete/{id}")
-    public String deleteJob(@PathVariable Long id) {
-        jobPostService.deleteJob(id);
+    public String deleteJob(@PathVariable Long id,
+                            org.springframework.security.core.Authentication auth) {
+        com.alumni.portal.model.JobPost job = jobPostService.getJobById(id);
+        if (job != null && (job.getPostedBy().equals(auth.getName())
+                || auth.getAuthorities().stream()
+                   .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")))) {
+            jobPostService.deleteJob(id);
+        }
         return "redirect:/jobs";
     }
     @GetMapping("/post-login")

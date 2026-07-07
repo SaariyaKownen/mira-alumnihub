@@ -16,6 +16,10 @@ public class Milestone {
     private String title;
     private String description;
     private LocalDate postedDate;
+    private String imageUrl;
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

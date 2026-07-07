@@ -442,3 +442,13 @@ h1,h2,h3,h4,h5,h6 { color: #e1bee7; }
 img[src="/photos/"] {
     display: none !important;
 }
+/* ── Page Load Progress Bar ── */
+.page-loader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #7c4dff, #ce93d8, #ffd700);
+    z-index: 99999;
+    transition: width 0.3s ease;
+}

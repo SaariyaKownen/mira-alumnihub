@@ -54,4 +54,13 @@ public class MessageController {
         messageService.sendMessage(currentUser, receiverEmail, content);
         return "redirect:/messages/chat/" + receiverEmail;
     }
+    @GetMapping("/messages/unread-count")
+    @ResponseBody
+    public java.util.Map<String, Long> unreadCount(
+            org.springframework.security.core.Authentication auth) {
+        long count = messageService.getUnreadCount(auth.getName());
+        java.util.Map<String, Long> result = new java.util.HashMap<>();
+        result.put("count", count);
+        return result;
+    }
 }

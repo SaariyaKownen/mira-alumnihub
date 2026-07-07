@@ -2,6 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="celebration">
+	<div class="page-loader" id="pageLoader"></div>
+	<script>
+	// Show loading bar on page navigation
+	document.addEventListener('click', function(e) {
+	    var link = e.target.closest('a');
+	    if (link && link.href &&
+	        !link.href.startsWith('javascript') &&
+	        !link.href.startsWith('#') &&
+	        link.href.indexOf(window.location.origin) > -1) {
+	        document.getElementById('pageLoader').style.width = '70%';
+	    }
+	});
+	window.addEventListener('load', function() {
+	    var loader = document.getElementById('pageLoader');
+	    if (loader) {
+	        loader.style.width = '100%';
+	        setTimeout(function(){ loader.style.opacity = '0'; }, 300);
+	    }
+	});
+	</script>
 <style>
 /* ── Celebration Overlay ── */
 .celebrate-overlay {

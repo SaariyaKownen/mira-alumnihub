@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -27,20 +29,40 @@
         <div class="card mb-4">
             <div class="card-header"><h6 class="mb-0">✨ Share Your Milestone</h6></div>
             <div class="card-body">
-                <form th:action="@{/milestones/add}" th:object="${milestone}" method="post">
-                    <div class="mb-3">
-                        <input th:field="*{title}" class="form-control"
-                               placeholder="e.g. Got promoted to Senior Engineer! 🎉" required/>
-                    </div>
-                    <div class="mb-3">
-                        <textarea th:field="*{description}" class="form-control" rows="2"
-                                  placeholder="Tell the community more (optional)..."></textarea>
-                    </div>
-                    <button type="submit" class="btn fw-bold text-white"
-                            style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">
-                        🎉 Post Milestone
-                    </button>
-                </form>
+				<form th:action="@{/milestones/add}"
+				      th:object="${milestone}" method="post"
+				      enctype="multipart/form-data">
+				    <div class="mb-3">
+				        <input th:field="*{title}" class="form-control"
+				               placeholder="e.g. Got promoted to Senior Engineer! 🎉"
+				               required/>
+				    </div>
+				    <div class="mb-3">
+				        <textarea th:field="*{description}" class="form-control"
+				                  rows="2"
+				                  placeholder="Tell the community more (optional)...">
+				        </textarea>
+				    </div>
+				    <div class="mb-3">
+				        <label style="color:#ce93d8; font-size:13px;">
+				            📸 Add a Photo (optional)
+				        </label>
+				        <input type="file" name="image" class="form-control"
+				               accept="image/*"/>
+				        <small style="color:#7e57c2;">
+				            JPG, PNG — max 5MB
+				        </small>
+				    </div>
+				    <button type="submit" class="btn fw-bold text-white"
+				            style="background:linear-gradient(135deg,#7c4dff,#ce93d8);">
+				        🎉 Post Milestone
+				    </button>
+				</form>
+				<img th:if="${m.imageUrl != null}"
+				     th:src="${m.imageUrl}"
+				     style="width:100%; border-radius:10px; margin-top:10px;
+				            object-fit:cover; max-height:200px;
+				            border:1px solid rgba(206,147,216,0.2);"/>
             </div>
         </div>
 
@@ -61,8 +83,9 @@
                     </div>
 					<a href="javascript:void(0)"
 					   class="btn btn-sm btn-outline-danger"
+					   th:if="${m.posterEmail == #authentication.name}"
 					   th:onclick="|openConfirm('/milestones/delete/${m.id}',
-					   'Delete this milestone?',
+					   'Delete your milestone?',
 					   'This will permanently remove it from the wall.')|">
 					   🗑️
 					</a>

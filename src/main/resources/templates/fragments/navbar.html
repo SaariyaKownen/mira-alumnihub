@@ -12,7 +12,15 @@
     <a href="/students" class="sidebar-link">🎒 Students</a>
     <a href="/jobs" class="sidebar-link">💼 Jobs</a>
     <a href="/events" class="sidebar-link">🎉 Events</a>
-    <a href="/messages" class="sidebar-link">💬 Messages</a>
+	<a href="/messages" class="sidebar-link">
+	    💬 Messages
+	    <span id="msgBadge"
+	          style="background:#e91e63; color:white; border-radius:50%;
+	                 width:18px; height:18px; font-size:10px; font-weight:bold;
+	                 display:none; align-items:center; justify-content:center;
+	                 margin-left:auto;">
+	    </span>
+	</a>
     <a href="/game" class="sidebar-link">🎮 Memory Game</a>
     <a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
     <a href="/quiz" class="sidebar-link">🔥 Daily Quiz</a>
@@ -64,7 +72,14 @@
         <a href="/students" class="mobile-link">🎒 Students</a>
         <a href="/jobs" class="mobile-link">💼 Jobs</a>
         <a href="/events" class="mobile-link">🎉 Events</a>
-        <a href="/messages" class="mobile-link">💬 Messages</a>
+		<a href="/messages" class="mobile-link">
+		    💬 Messages
+		    <span id="msgBadgeMobile"
+		          style="background:#e91e63; color:white; border-radius:50%;
+		                 padding:1px 6px; font-size:10px; font-weight:bold;
+		                 margin-left:8px; display:none;">
+		    </span>
+		</a>
         <a href="/game" class="mobile-link">🎮 Memory Game</a>
         <a href="/leaderboard" class="mobile-link">🏆 Leaderboard</a>
         <a href="/quiz" class="mobile-link">🔥 Daily Quiz</a>
@@ -104,7 +119,32 @@ function toggleMobileMenu() {
     btn.classList.toggle('active');
 }
 </script>
-
+<script>
+function checkUnreadMessages() {
+    fetch('/messages/unread-count')
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+            var count = data.count || 0;
+            var badge = document.getElementById('msgBadge');
+            var badgeMobile = document.getElementById('msgBadgeMobile');
+            if (count > 0) {
+                if (badge) {
+                    badge.textContent = count > 9 ? '9+' : count;
+                    badge.style.display = 'flex';
+                }
+                if (badgeMobile) {
+                    badgeMobile.textContent = count > 9 ? '9+' : count;
+                    badgeMobile.style.display = 'inline';
+                }
+            } else {
+                if (badge) badge.style.display = 'none';
+                if (badgeMobile) badgeMobile.style.display = 'none';
+            }
+        }).catch(function(){});
+}
+checkUnreadMessages();
+setInterval(checkUnreadMessages, 30000);
+</script>
 </aside>
 </body>
 </html>
