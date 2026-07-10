@@ -18,19 +18,38 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
+                // Public pages
                 .requestMatchers(
-                    "/", "/register", "/register-student",
-                    "/login", "/photos/**", "/*.css",
-                    "/static/**", "/403", "/error",
+                    "/",
+                    "/login",
+                    "/register",
+                    "/register-student",
+                    "/403",
+                    "/error",
                     "/setup-admin"
                 ).permitAll()
+                // Static resources
+                .requestMatchers(
+                    "/static/**",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/*.css",
+                    "/*.js",
+                    "/photos/**",
+                    "/galaxy-theme.css",
+                    "/favicon.ico"
+                ).permitAll()
+                // Admin only
                 .requestMatchers(
                     "/admin/control",
                     "/admin/control/**"
                 ).hasRole("ADMIN")
+                // Everything else needs login
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -44,7 +63,12 @@ public class SecurityConfig {
             )
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers(
-                    "/ai/**", "/quiz/**", "/profile/**"
+                    "/ai/**",
+                    "/quiz/**",
+                    "/profile/save-bio/**",
+                    "/milestones/add",
+                    "/messages/send",
+                    "/messages/unread-count"
                 )
             )
             .exceptionHandling(ex -> ex

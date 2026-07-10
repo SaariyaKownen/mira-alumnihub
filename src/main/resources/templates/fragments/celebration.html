@@ -2,6 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="celebration">
+	<!-- Page loader bar -->
+	<div class="page-loader" id="pageLoader"></div>
+	<script>
+	(function() {
+	    // Start loader immediately
+	    var loader = document.getElementById('pageLoader');
+	    if (loader) loader.style.width = '40%';
+
+	    // Advance on DOM ready
+	    document.addEventListener('DOMContentLoaded', function() {
+	        if (loader) loader.style.width = '80%';
+	    });
+
+	    // Complete on full load
+	    window.addEventListener('load', function() {
+	        if (loader) {
+	            loader.style.width = '100%';
+	            setTimeout(function() {
+	                loader.style.transition = 'opacity 0.3s';
+	                loader.style.opacity = '0';
+	            }, 200);
+	        }
+	    });
+
+	    // Show loader on link clicks
+	    document.addEventListener('click', function(e) {
+	        var link = e.target.closest('a');
+	        if (link && link.href &&
+	            link.href.indexOf('javascript') === -1 &&
+	            link.href.indexOf('#') === -1 &&
+	            link.target !== '_blank') {
+	            var l = document.getElementById('pageLoader');
+	            if (l) {
+	                l.style.opacity = '1';
+	                l.style.width = '60%';
+	            }
+	        }
+	    });
+	})();
+	</script>
 	<div class="page-loader" id="pageLoader"></div>
 	<script>
 	// Show loading bar on page navigation

@@ -1,7 +1,7 @@
  <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <title>MIRA AlumniHub - Connect. Network. Grow.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -684,6 +684,62 @@ for(let i=0; i<100; i++){
     s.style.animationDelay = Math.random()*4+'s';
     s.style.animationDuration = (Math.random()*3+2)+'s';
     sc.appendChild(s);
+}
+@media (max-width: 768px) {
+    .top-nav .container {
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: space-between;
+        padding: 0 12px;
+    }
+    .nav-brand { font-size: 15px; }
+    .nav-link-pill {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    .nav-join {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+    .hero { padding: 24px 0 16px; }
+    .hero-title {
+        font-size: 26px !important;
+        line-height: 1.2;
+    }
+    .hero-sub { font-size: 13px; margin-bottom: 16px; }
+    .btn-primary-galaxy,
+    .btn-outline-galaxy {
+        padding: 10px 18px;
+        font-size: 13px;
+        width: 100%;
+        text-align: center;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .d-flex.gap-3.flex-wrap.mb-4 {
+        flex-direction: column !important;
+    }
+    .col-lg-6.text-center { display: none !important; }
+    .stat-box {
+        padding: 14px 8px;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(206,147,216,0.2);
+    }
+    .row.g-0 .col-md-3:last-child .stat-box {
+        border-bottom: none;
+    }
+    .row.g-0 { flex-direction: column !important; }
+    .stat-num { font-size: 2rem; }
+    .feat-card { padding: 16px 12px; }
+    .ai-section { padding: 20px 14px; }
+    .ai-section .col-md-5 { display: none; }
+    .cta-section { padding: 24px 14px; }
+    .cta-section h2 { font-size: 22px !important; }
+    .mx-4 {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+    .footer { padding: 24px 0 12px; }
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
