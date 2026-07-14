@@ -22,9 +22,9 @@
 	    </span>
 	</a>
     <a href="/game" class="sidebar-link">🎮 Memory Game</a>
-    <a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
     <a href="/quiz" class="sidebar-link">🔥 Daily Quiz</a>
     <a href="/milestones" class="sidebar-link">🎂 Milestone Wall</a>
+	<a href="/leaderboard" class="sidebar-link">🏆 Leaderboard</a>
 
     <div class="sidebar-section-label">Insights</div>
     <a href="/admin/dashboard" class="sidebar-link">📊 Dashboard</a>
@@ -45,7 +45,7 @@
             </div>
         </a>
         <form th:action="@{/logout}" method="post" class="m-0">
-            <button class="sidebar-logout-btn">🚪 Logout</button>
+            <button class="sidebar-logout-btn">🚪 Logout </button>
         </form>
     </div>
 </div>
@@ -120,29 +120,42 @@ function toggleMobileMenu() {
 }
 </script>
 <script>
-function checkUnreadMessages() {
-    fetch('/messages/unread-count')
-        .then(function(r){ return r.json(); })
-        .then(function(data) {
-            var count = data.count || 0;
-            var badge = document.getElementById('msgBadge');
-            var badgeMobile = document.getElementById('msgBadgeMobile');
-            if (count > 0) {
-                if (badge) {
-                    badge.textContent = count > 9 ? '9+' : count;
-                    badge.style.display = 'flex';
-                }
-                if (badgeMobile) {
-                    badgeMobile.textContent = count > 9 ? '9+' : count;
-                    badgeMobile.style.display = 'inline';
-                }
-            } else {
-                if (badge) badge.style.display = 'none';
-                if (badgeMobile) badgeMobile.style.display = 'none';
-            }
-        }).catch(function(){});
-}
-checkUnreadMessages();
+	<script>
+	function checkUnreadMessages() {
+	    fetch('/messages/unread-count')
+	        .then(function(r) {
+	            if (!r.ok) return null;
+	            return r.json();
+	        })
+	        .then(function(data) {
+	            if (!data) return;
+	            var count = data.count || 0;
+	            var badge = document.getElementById('msgBadge');
+	            var badgeMobile = document.getElementById('msgBadgeMobile');
+	            if (count > 0) {
+	                if (badge) {
+	                    badge.textContent = count > 9 ? '9+' : count;
+	                    badge.style.display = 'flex';
+	                }
+	                if (badgeMobile) {
+	                    badgeMobile.textContent = count > 9 ? '9+' : count;
+	                    badgeMobile.style.display = 'inline';
+	                }
+	            } else {
+	                if (badge) badge.style.display = 'none';
+	                if (badgeMobile) badgeMobile.style.display = 'none';
+	            }
+	        })
+	        .catch(function() {});
+	}
+
+	// Only run if user appears to be logged in
+	if (document.querySelector('.sidebar-logout-btn') ||
+	    document.querySelector('.mobile-drawer')) {
+	    checkUnreadMessages();
+	    setInterval(checkUnreadMessages, 60000);
+	}
+	</script>
 setInterval(checkUnreadMessages, 30000);
 </script>
 </aside>
